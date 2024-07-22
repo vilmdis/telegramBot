@@ -1,14 +1,21 @@
-Installation
-Clone the repository:
-1. git clone https://github.com/vilmdis/telegramBot.git
-2. cd telegram_bot
+# Installation
 
-Install Poetry, if not already installed:
+- Clone the repository:
+```
+git clone https://github.com/vilmdis/telegramBot.git
+cd telegram_bot
+```
+- Install Poetry, if not already installed:
+```
 pip install poetry
-
-Install dependencies:
+```
+- Install dependencies:
+```
 poetry install
+```
+# Configuration
 
-Configuration
-Copy the .env.example file to .env:
+- Copy the .env.example file to .env:
+```
 cp .env.example .env
+```
