@@ -3,7 +3,7 @@
 - Clone the repository:
 ```
 git clone https://github.com/vilmdis/telegramBot.git
-cd telegram_bot
+cd telegramBot
 ```
 - Install Poetry, if not already installed:
 ```
