@@ -12,6 +12,7 @@ load_dotenv()
 START_TEXT = os.getenv('START_TEXT')
 HELP_TEXT = os.getenv('HELP_TEXT')
 BENCH = os.getenv('BENCH')
+MASS = os.getenv('MASS')
 
 
 @router.message(CommandStart())
@@ -23,7 +24,7 @@ async def start(message: Message):
                          reply_markup=kb.main)
 
 @router.message(Command('help'))
-async def start(message: Message):
+async def help(message: Message):
     await message.answer(f'Here is the instruction:\n{HELP_TEXT}')
 
 @router.message(F.text == "Anabolic Music")
@@ -34,25 +35,35 @@ async def music(message: Message):
 @router.message(F.text == "Gym")
 async def gym_programs(message: Message):
     await message.answer(text="Choose the program:",
-                         reply_markup=kb.gym())
+                         reply_markup=kb.gym)
 
-@router.message(F.data == "guids")
+@router.callback_query(F.data == "guids")
 async def guids(callback: CallbackQuery):
+    await callback.message.delete()
     await callback.message.answer(text='Here are some guids and tips for you:',
                                   reply_markup=kb.guids)
 
-@router.message(F.data == "bench")
+@router.callback_query(F.data == "bench")
 async def bench_tips(callback: CallbackQuery):
     doc = FSInputFile(BENCH)
-    await callback.answer('Bench Press')
-    await callback.bot.send_document(chat_id=callback.message.chat.id, document=doc, caption='Here are bench press tips')
-
-@router.message(F.data == "back")
-async def go_back_button(callback: CallbackQuery):
     await callback.message.delete()
-    await gym_programs(callback.message.chat.id)
-    await callback.message.answer()
+    await callback.answer('Bench Press')
+    await callback.bot.send_document(chat_id=callback.message.chat.id, document=doc, caption='Here are bench press tips:')
 
-@router.message(F.data == "exit")
+@router.callback_query(F.data == "mass")
+async def mass_guids(callback: CallbackQuery):
+    doc = FSInputFile(MASS)
+    await callback.message.delete()
+    await callback.answer('Mass')
+    await callback.bot.send_document(chat_id=callback.message.chat.id, document=doc, caption='Here are mass guids:')
+
+@router.callback_query(F.data == "back")
+async def back_button(callback: CallbackQuery):
+    await callback.message.delete()
+    await callback.message.answer(text="Choose the program:", reply_markup=kb.gym)
+    await callback.answer('')
+
+@router.callback_query(F.data == "exit")
 async def exit_button(callback: CallbackQuery):
     await callback.message.delete()
+    await callback.answer('')
